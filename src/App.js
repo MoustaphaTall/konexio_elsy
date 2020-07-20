@@ -11,6 +11,7 @@ const MIN_HEART = 80;
 const MAX_HEART = 180;
 const MIN_STEPS = 0;
 const MAX_STEPS = 50000;
+const WATER = 1.5;
 
 class App extends React.Component {
   constructor(props) {
@@ -58,15 +59,30 @@ class App extends React.Component {
     }
   }
 
-  calculateWater(value, element) {    
+  calculateWater(value, element) {  
+    let validTemperature = 20;
+    let validHeart = 120;
+    let validSteps = 10000;    
+    if (this.state.steps < 10000)            {
+      validSteps = this.state.steps;
+    }
+    if (this.state.temperature < 20) {
+      validTemperature = this.state.temperature;
+    }
+    if (this.state.heart < 120) {
+      validHeart = this.state.heart;
+    }
+
     if (element === "temperature") {
       if (value - this.state.temperature > 0) {
         this.setState({
-          water: this.state.water + 0.02
+           /* température actuelle - température totale (> 20) donne chaque degré de temp en plus,
+            qui prennent chacun un facteur 0.02. Le résultat est ajouté à water  */
+          water: WATER + ((this.state.temperature - 20) * 0.02) + ((this.state.heart - validHeart) * 0.0008) + ((this.state.steps - validSteps) * 0.00002)
         });
       } else {
         this.setState({
-          water: this.state.water - 0.02
+          water: WATER + ((this.state.temperature - 20) * 0.02) + ((this.state.heart - validHeart) * 0.0008) + ((this.state.steps - validSteps) * 0.00002)
         });
       }
     }
@@ -74,11 +90,11 @@ class App extends React.Component {
     if (element === "heart") {
       if (value - this.state.heart > 0) {
         this.setState({
-          water: this.state.water + 0.0008
+          water: WATER + ((this.state.heart - 120) * 0.0008) + ((this.state.temperature - validTemperature) * 0.02) + ((this.state.steps - validSteps) * 0.00002)
         });
       } else {
         this.setState({
-          water: this.state.water - 0.0008
+          water: WATER + ((this.state.heart - 120) * 0.0008) + ((this.state.temperature - validTemperature) * 0.02) + ((this.state.steps - validSteps) * 0.00002)
         });
      }
     }
@@ -86,11 +102,11 @@ class App extends React.Component {
     if (element === "steps") {
       if (value - this.state.steps > 0) {
         this.setState({
-          water: this.state.water + 0.00002 //unsure about the values?
+          water: WATER + ((this.state.steps - 10000) * 0.00002) + ((this.state.heart - validHeart) * 0.0008) + ((this.state.temperature - validTemperature) * 0.02)
         });
       } else {
         this.setState({
-          water: this.state.water - 0.00002
+          water: WATER + ((this.state.steps - 10000) * 0.00002) + ((this.state.heart - validHeart) * 0.0008) + ((this.state.temperature - validTemperature) * 0.02)
         });
       }
     }
