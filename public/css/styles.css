@@ -1,0 +1,8 @@
+.box {
+    background-color: #CCC;
+    padding: 10px;
+    text-align: center;
+}
+.box:nth-child(even) {
+    background-color: #AAA;
+}
