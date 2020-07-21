@@ -5,7 +5,8 @@ class Icon extends React.Component {
         return (
             <p 
                 className="material-icons" 
-                style={{fontSize: 100, color: this.props.iconColor}}>{this.props.name}
+                style={{fontSize: 100, color: this.props.iconColor}}>
+                {this.props.name}
             </p>
         );
     }
